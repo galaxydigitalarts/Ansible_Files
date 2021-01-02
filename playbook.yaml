@@ -35,3 +35,17 @@
     service:
       name: mariadb
       enabled: yes
+      
+-
+ name: Playbook-3
+ hosts: localhost
+ tasks:
+  - name: Configure Firewall
+    firewalld:
+      state: enabled
+      zone: public
+      permanent: true
+      port: 3306/tcp
+     
+      
+      
