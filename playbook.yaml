@@ -1,3 +1,6 @@
+# notes:
+# name = description
+# under the name field, is the LINUX COMMAND, e.g. service, yum, mariad, etc. 
 -
  name: Playbook-1
  hosts: localhost
@@ -46,6 +49,35 @@
       zone: public
       permanent: true
       port: 3306/tcp
+      
+  - name: Reload firewalld
+    service:
+      name: firewalld
+      state: reloaded
+      
+# notes:
+# use mysql_db module. 
+# must have mysql_python installed.       
+-
+ name: Playbook-4
+ hosts: localhost
+ tasks:
+  - name: create database ecomdb
+    mysql_db:
+      name: ecomdb
+      state: present    
+
+  - name: Add a user
+    mysql_user: 
+      name: ecomuser
+      password: ecompassword
+      priv: '*.*:ALL,GRANT'
+      state: present
+      
+  - name: import sql data
+    shell: mysql < db-load-script.sql
+    
+  
      
       
       
