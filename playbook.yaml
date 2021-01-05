@@ -2,7 +2,7 @@
 # name = description
 # under the name field, is the LINUX COMMAND, e.g. service, yum, mariad, etc. 
 -
- name: Playbook-1
+ name: Playbook-1 Install and configure Firewall
  hosts: localhost
  tasks:
   - name: Install firewalld
@@ -20,8 +20,9 @@
       name: firewalld
       enabled: yes
       
+#///////////////////////////////////////////////////////   
 -
- name: Playbook-2
+ name: Playbook-2 Install and configure MariaDB
  hosts: localhost
  tasks:
   - name: Install MariaDB
@@ -77,8 +78,10 @@
   - name: import sql data
     shell: mysql < db-load-script.sql
     
+#///////////////////////////////////////////////////////     
+    
 -
- name: Playbook-5
+ name: Playbook-5 Install and configure PHP
  hosts: localhost
  tasks:
   - name: Install httpd
@@ -93,6 +96,26 @@
     yum:
       name: php-mysqlnd
       state: present
+      
+-
+ name: Playbook-6
+ hosts: localhost
+ tasks:
+  - name: Configure Firewall
+    firewalld:
+      state: enabled
+      zone: public
+      permanent: true
+      port: 80/tcp
+      
+  - name: Reload firewalld
+    service:
+      name: firewalld
+      state: reloaded      
+
+
+ 
+    
         
      
       
