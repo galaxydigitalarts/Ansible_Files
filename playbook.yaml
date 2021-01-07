@@ -111,10 +111,45 @@
   - name: Reload firewalld
     service:
       name: firewalld
-      state: reloaded      
+      state: reloaded 
 
+-
+ name: Playbook-7 Configure HTTPD file
+ hosts: localhost
+ tasks:
+  - name: Configure httdp file
+    #lineinfile: dest=/etc/httpd/conf/httpd.conf regexp='^index.html' line='index.php'
+    replace:
+      path: /etc/httpd/conf/httpd.conf
+      regexp: 'index.html'
+      replace: 'index.php'
 
- 
+  
+  - name: start the httpd service 
+    service:
+      name: httpd
+      state: started
+      
+  - name: enable httpd   
+    systemd:
+      name: httpd
+      enabled: true
+
+-
+ name: Playbook-8 Install git
+ hosts: localhost
+ tasks:
+  - name: Install git
+    yum:
+     name: git
+     state: present
+
+  - name: pull git clone
+    git:
+     repo: 'https://github.com/kodekloudhub/learning-app-ecommerce.git'
+     dest:  /var/www/html/
+     clone: yes
+
     
         
      
