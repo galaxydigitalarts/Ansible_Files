@@ -113,6 +113,8 @@
       name: firewalld
       state: reloaded 
 
+
+# Also remember to change the IP address to reflect the IP of the db server.
 -
  name: Playbook-7 Configure HTTPD file
  hosts: localhost
