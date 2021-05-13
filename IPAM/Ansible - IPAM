@@ -1,8 +1,0 @@
----
-- 
- name: Play to install and configure IP Asset Manamgement app (IPAM).
- hosts: all
- become: yes
- become_user: root
- tasks:
- - name: Install the necessary pacakages. 
