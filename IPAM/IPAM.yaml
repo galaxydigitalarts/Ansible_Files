@@ -5,6 +5,13 @@
  become: yes
  become_user: root
  tasks:
+  - name: Install epel-release repository
+    yum:
+      name: epel-release
+      state: present
+
+# --------------------------
+
   - name: Install httpd
     yum:
       name: httpd
@@ -66,7 +73,16 @@
       name: php-mbstring
       state: present
       
+  - name: Install install php-json
+    yum:
+      name: php-json
+      state: present
       
+  - name: Install php-gmp
+    yum:
+      name: php-gmp
+      state: present
+     
 # --------------------------	  
   - name: Install git
     yum:
