@@ -5,6 +5,12 @@
  become: yes
  become_user: root
  tasks:
+  - name: Setting locale
+    blockinfile:
+      path: /etc/environment
+      block:  LC_ALL=en_US.utf-8
+              LANG=en_US.utf-8
+
   - name: Install epel-release repository
     yum:
       name: epel-release
