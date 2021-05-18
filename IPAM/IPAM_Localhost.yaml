@@ -1,0 +1,116 @@
+# --------------------------
+- name: Play to install and configure IP Asset Manamgement app (IPAM).
+  hosts: localhost
+  become: yes
+  become_user: root
+  tasks:
+    - name: Setting locale
+      blockinfile:
+        path: /etc/environment
+        block:  LC_ALL=en_US.utf-8
+          LANG=en_US.utf-8
+
+    - name: Install epel-release repository
+      yum:
+        name: epel-release
+        state: present
+
+    # --------------------------
+
+    - name: Install httpd
+      yum:
+        name: httpd
+        state: present
+
+    # --------------------------
+    - name: Install php
+      yum:
+        name: php
+        state: present
+
+    - name: Install php-cli
+      yum:
+        name: php-cli
+        state: present
+
+    - name: Install php-gd
+      yum:
+        name: php-gd
+        state: present
+
+    - name: Install php-common
+      yum:
+        name: php-common
+        state: present
+
+    - name: Install php-ldap
+      yum:
+        name: php-ldap
+        state: present
+
+    - name: Install php-pdo
+      yum:
+        name: php-pdo
+        state: present
+
+    - name: Install php-pear
+      yum:
+        name: php-pear
+        state: present
+
+    - name: Install php-snmp
+      yum:
+        name: php-snmp
+        state: present
+
+    - name: Install php-xml
+      yum:
+        name: php-xml
+        state: present
+
+    - name: Install php-mysql
+      yum:
+        name: php-mysqlnd
+        state: present
+
+    - name: Install php-mbstring
+      yum:
+        name: php-mbstring
+        state: present
+
+    - name: Install install php-json
+      yum:
+        name: php-json
+        state: present
+
+    - name: Install php-gmp
+      yum:
+        name: php-gmp
+        state: present
+
+    # --------------------------
+    - name: Install git
+      yum:
+        name: git
+        state: present
+
+    # --------------------------
+    - name: Install mariadb
+      yum:
+        name: mariadb-server
+        state: present
+
+    # --------------------------
+    - name: Configuring and running Apache webserver
+      blockinfile:
+        path: /etc/httpd/conf/httpd.conf
+        block:  <Directory "/var/www/html">
+          Options FollowSymLinks
+          AllowOverride all
+          Order allow,deny
+          Allow from all
+          </Directory>
+
+      # --------------------------
+
+    
