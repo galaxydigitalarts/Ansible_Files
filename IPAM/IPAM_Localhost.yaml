@@ -7,7 +7,8 @@
     - name: Setting locale
       blockinfile:
         path: /etc/environment
-        block:  LC_ALL=en_US.utf-8
+        block:
+          LC_ALL=en_US.utf-8
           LANG=en_US.utf-8
 
     - name: Install epel-release repository
@@ -104,13 +105,27 @@
     - name: Configuring and running Apache webserver
       blockinfile:
         path: /etc/httpd/conf/httpd.conf
-        block:  <Directory "/var/www/html">
+        marker: "{mark}"
+        marker_begin: "<Directory \"/var/www/html\">"
+        marker_end: "</Directory>"
+        block: |
           Options FollowSymLinks
           AllowOverride all
           Order allow,deny
           Allow from all
-          </Directory>
 
       # --------------------------
 
-    
+    - name: Set server name to localhost port 80
+      replace:
+        path: /etc/httpd/conf/httpd.conf
+        regexp: "#ServerName www.example.com:80"
+        replace: "ServerName locahost:80"
+
+      # --------------------------
+
+    - name: Set correct timezone to php.ini to avoid php warnings
+      replace:
+        path: /etc/php.ini
+        regexp: ";date.timezone ="
+        replace: ";date.timezone = America/Chicago"
