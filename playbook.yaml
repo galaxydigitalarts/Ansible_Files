@@ -88,6 +88,7 @@
     yum:
       name: httpd
       state: present
+      
   - name: Install php
     yum:
       name: php

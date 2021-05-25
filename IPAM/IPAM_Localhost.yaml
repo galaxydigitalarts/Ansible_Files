@@ -133,24 +133,57 @@
         replace: ";date.timezone = America/Chicago"
         
     # --------------------------
+    
     - name: start the httpd service 
       service:
         name: httpd
         state: started
         
     - name: enable httpd   
-    systemd:
-      name: httpd
-      enabled: true
+      systemd:
+        name: httpd
+        enabled: true
      
     # --------------------------     
       
     - name: Stop firewalld service
-    service:
-      name: firewalld
-      state: stopped
+      service:
+        name: firewalld
+        state: stopped
 
     - name: Disable firewalld service
-    service:
-      name: firewalld
-      enabled: no
+      service:
+        name: firewalld
+        enabled: no
+      
+    # --------------------------
+    
+    - name: start the mariadb service 
+      service:
+        name: mariadb
+        state: started
+        
+    - name: enable httpd   
+      systemd:
+        name: mariadb
+        enabled: yes
+        
+    # --------------------------
+    
+    - name: create database ecomdb
+      mysql_db:
+        name: ecomdb
+        state: present    
+
+    - name: Add a user
+      mysql_user: 
+        name: ecomuser
+        password: ecompassword
+        priv: '*.*:ALL,GRANT'
+        state: present
+      
+    - name: import sql data
+      shell: mysql < db-load-script.sql
+
+    # --------------------------
+    
