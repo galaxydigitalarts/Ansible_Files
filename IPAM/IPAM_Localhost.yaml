@@ -10,6 +10,8 @@
         block:
           LC_ALL=en_US.utf-8
           LANG=en_US.utf-8
+          
+    # --------------------------
 
     - name: Install epel-release repository
       yum:
@@ -114,7 +116,7 @@
           Order allow,deny
           Allow from all
 
-      # --------------------------
+    # --------------------------
 
     - name: Set server name to localhost port 80
       replace:
@@ -122,10 +124,33 @@
         regexp: "#ServerName www.example.com:80"
         replace: "ServerName locahost:80"
 
-      # --------------------------
+    # --------------------------
 
     - name: Set correct timezone to php.ini to avoid php warnings
       replace:
         path: /etc/php.ini
         regexp: ";date.timezone ="
         replace: ";date.timezone = America/Chicago"
+        
+    # --------------------------
+    - name: start the httpd service 
+      service:
+        name: httpd
+        state: started
+        
+    - name: enable httpd   
+    systemd:
+      name: httpd
+      enabled: true
+     
+    # --------------------------     
+      
+    - name: Stop firewalld service
+    service:
+      name: firewalld
+      state: stopped
+
+    - name: Disable firewalld service
+    service:
+      name: firewalld
+      enabled: no
