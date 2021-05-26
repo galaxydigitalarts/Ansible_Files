@@ -170,20 +170,28 @@
         
     # --------------------------
     
-    - name: create database ecomdb
-      mysql_db:
-        name: ecomdb
+    - name: Install git
+      yum:
+        name: git
         state: present    
-
-    - name: Add a user
-      mysql_user: 
-        name: ecomuser
-        password: ecompassword
-        priv: '*.*:ALL,GRANT'
-        state: present
-      
-    - name: import sql data
-      shell: mysql < db-load-script.sql
-
+    
+    - name: Downloading phpipam installation files
+      git:
+        repo: https://github.com/phpipam/phpipam.git
+        dest: /var/www/html/
+        clone: yes
+        
     # --------------------------
+    
+    - name: Change file permissions
+      file:
+        path: /var/www/html/
+        state: directory
+        recurse: yes
+        owner: apache
+        group: apache
+    
+    
+    
+  
     
