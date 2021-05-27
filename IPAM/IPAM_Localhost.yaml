@@ -183,13 +183,37 @@
         
     # --------------------------
     
-    - name: Change file permissions
+    - name: Change file ownership
       file:
         path: /var/www/html/
         state: directory
         recurse: yes
         owner: apache
         group: apache
+        
+    - name: Change security Linux context
+      file:
+        target: /var/www/html/
+        setype: httpd_sys_content_t
+        ftype: a
+        
+    - name: Change permissions for the files.
+      file:
+        path: /var/www/html/
+        mode: 0644
+        state: file
+        recurse: yes
+        
+    - name: Change permissions for the directories
+      file:
+        path: /var/www/html/
+        mode: 0755
+        state: directory
+        recurse: yes
+        
+    - name: 
+        
+    # --------------------------
     
     
     
