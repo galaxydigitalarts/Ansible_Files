@@ -211,9 +211,30 @@
         state: directory
         recurse: yes
         
-    - name: 
+    - name: Change security Linux context
+      file:
+        target: app/admin/import-export/upload/
+        setype: httpd_sys_rw_content_t
+        ftype: a
+        
+    - name: Change security Linux context
+      file:
+        target: aapp/subnets/import-subnet/upload/
+        setype: httpd_sys_rw_content_t
+        ftype: a
+        
+    - name: Change security Linux context
+      file:
+        target: css/1.4.2/images/logo/
+        setype: httpd_sys_rw_content_t
+        ftype: a
         
     # --------------------------
+    
+    - name: copy over sample config file to config.php that phpipam uses
+      copy:
+        src: config.dist.php
+        dest: config.php
     
     
     
