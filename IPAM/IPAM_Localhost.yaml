@@ -5,7 +5,7 @@
   become_user: root
   tasks:
     - name: Setting locale
-      blockinfile:
+      blockinfile: |
         path: /etc/environment
         block:
           LC_ALL=en_US.utf-8
@@ -192,39 +192,39 @@
         group: apache
         
     - name: Change security Linux context
-      file:
+      sefcontext:
         target: /var/www/html/
         setype: httpd_sys_content_t
-        ftype: a
+        recursive: yes
         
     - name: Change permissions for the files.
       file:
         path: /var/www/html/
-        mode: 0644
-        state: file
+        mode: a-x
+        state: directory
         recurse: yes
         
     - name: Change permissions for the directories
       file:
         path: /var/www/html/
-        mode: 0755
+        mode: u=rwX,g-rX,o-rX
         state: directory
         recurse: yes
         
     - name: Change security Linux context
-      file:
+      sefcontext:
         target: app/admin/import-export/upload/
         setype: httpd_sys_rw_content_t
         ftype: a
         
     - name: Change security Linux context
-      file:
+      sefcontext:
         target: aapp/subnets/import-subnet/upload/
         setype: httpd_sys_rw_content_t
         ftype: a
         
     - name: Change security Linux context
-      file:
+      sefcontext:
         target: css/1.4.2/images/logo/
         setype: httpd_sys_rw_content_t
         ftype: a
@@ -233,10 +233,9 @@
     
     - name: copy over sample config file to config.php that phpipam uses
       copy:
-        src: config.dist.php
-        dest: config.php
+        src: /var/www/html/config.dist.php
+        dest: /var/www/html/config.php
     
     
     
   
-    
