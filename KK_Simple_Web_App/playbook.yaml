@@ -1,0 +1,13 @@
+---
+-
+  name: Play to deploy the KodeKloud simple webapp.
+  hosts: db_and_web_servers
+  tasks:
+    - name: Install Python and dependecies
+      yum:
+        name: {{ item }}
+        state: present
+        with_items:
+          - epel-release
+          - python
+          - python-pip
