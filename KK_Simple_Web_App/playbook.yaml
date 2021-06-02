@@ -2,12 +2,58 @@
 -
   name: Play to deploy the KodeKloud simple webapp.
   hosts: db_and_web_servers
+  vars:
+      pythonPackages:
+        - epel-release
+        - python
+        - python-pip
+      mysqlPackages:
+        - mysql-server
+        - mysql-client
+      flaskPackages:
+        - flask
+        - flask-mysql
+  become: yes
+  become_user: root
   tasks:
     - name: Install Python and dependecies
       yum:
-        name: {{ item }}
+        name: "{{ pythonPackages }}"
         state: present
-        with_items:
-          - epel-release
-          - python
-          - python-pip
+
+    - name: Install MYSQL and dependecies
+      yum:
+        name: "{{ mysqlPackages }}"
+        state: present
+
+    - name: Start MySQL Service
+      service:
+        name: mysql
+        state: started
+        enabled: yes
+
+    - name: Create the Application Databsae
+      mysql_db:
+        name: employee_db
+        state: present
+
+    - name: Create database user
+      mysql_user:
+        name: db_user
+        password: Passw0rd
+        priv: '*.*:ALL'
+        state: present
+        host: '%'
+
+    - name: Install Python Flask dependency
+      pip:
+        name: "{{ flaskPackages }}"
+        state: present
+
+    - name: Copy Source Code
+      copy:
+        src: app.py
+        dest: /opt/app.py
+
+    - name: Start web server
+      shell: FLASK_APP=/opt/app.py nohup flask run --host=0.0.0.0 &
