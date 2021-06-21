@@ -86,7 +86,7 @@
       replace:
         path: /etc/php.ini
         regexp: ";date.timezone ="
-        replace: ";date.timezone = America/Chicago"
+        replace: "date.timezone = America/Chicago"
         
     # --------------------------
     
